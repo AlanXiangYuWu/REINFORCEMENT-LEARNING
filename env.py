@@ -53,6 +53,7 @@ class SequentialDeliveryEnv(gym.Env):
         max_steps: int = 200,
         view_size: int = 5,
         reward_shaping: bool = False,
+        wrong_visit_penalty: float = 0.5,
         render_mode: Optional[str] = None,
     ) -> None:
         super().__init__()
@@ -68,6 +69,7 @@ class SequentialDeliveryEnv(gym.Env):
         self.max_steps = int(max_steps)
         self.view_size = int(view_size)
         self.reward_shaping = bool(reward_shaping)
+        self.wrong_visit_penalty = float(wrong_visit_penalty)
         self.render_mode = render_mode
 
         self._n_channels = 1 + self.n_landmarks + 1  # empty + K + wall
@@ -178,7 +180,7 @@ class SequentialDeliveryEnv(gym.Env):
                     # Don't overwrite a previously-correct mark.
                     if self.history[on_landmark] != 1.0:
                         self.history[on_landmark] = -1.0
-                    reward -= 0.5
+                    reward -= self.wrong_visit_penalty
                     outcome = "wrong"
 
         self._last_visit_outcome = outcome

@@ -22,11 +22,12 @@ from env import SequentialDeliveryEnv  # noqa: E402
 
 # Shared default env config -- keep in sync with docs/PRD.md §9.
 DEFAULT_ENV_KWARGS = dict(
-    grid_size=12,
-    n_landmarks=4,
-    max_steps=200,
+    grid_size=6,
+    n_landmarks=3,
+    max_steps=100,
     view_size=5,
     reward_shaping=False,
+    wrong_visit_penalty=0.1,
 )
 
 
