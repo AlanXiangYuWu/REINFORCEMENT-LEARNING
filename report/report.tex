@@ -13,7 +13,7 @@
 
 \title{\textbf{Sequential Multi-Target Delivery under Partial Observability}\\[4pt]
        \large CA6126 Final Project Report}
-\author{Group TBD}
+\author{Wu Xiangyu (武翔宇) \and Chen Yunyi (陈鋆怡) \and Jiang Huajian (姜华健)}
 \date{May 2026}
 
 \begin{document}
@@ -253,24 +253,47 @@ $6\times6$ (view coverage: $25/36 = 69\%$), landmarks to 3 (only $3!=6$
 orderings), and episode length to 100 steps, we isolate the POMDP reasoning
 from spatial difficulty.
 
-\paragraph{Results.}
+\paragraph{Results (3 seeds, 2M steps each, 200 eval episodes per seed).}
 
 \begin{table}[H]
 \centering
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Configuration} & \textbf{Steps} & \textbf{Reward} & \textbf{Success}
-  & \textbf{Wrong Visits} & \textbf{Ep.\ Len} \\
+\textbf{Agent} & \textbf{Reward (mean$\pm$std)} & \textbf{Success Rate}
+  & \textbf{Best Episode} \\
 \midrule
-Random (6$\times$6, $K$=3) & --- & $\sim -3.0$ & 0\% & $\sim 1.0$ & 100 \\
-RecurrentPPO (6$\times$6)  & 1.5M & $+6.09 \pm 3.04$ & \textbf{87.5\%} & low & $< 100$ \\
+Random baseline (6$\times$6, $K$=3) & $\sim -3.0$ & 0.0\% & --- \\
+RecurrentPPO seed 0  & $+6.09 \pm 3.04$ & \textbf{87.5\%} & $+7.91$ \\
+RecurrentPPO seed 1  & $-2.00 \pm 0.11$ & 0.0\% & $-1.10$ \\
+RecurrentPPO seed 2  & $+4.79 \pm 4.59$ & \textbf{78.5\%} & $+7.89$ \\
 \bottomrule
 \end{tabular}
-\caption{Phase 4: Small grid breakthrough. RecurrentPPO achieves 87.5\% success rate. Eval over 200 episodes.}
+\caption{Phase 4: Small grid results across 3 seeds. Seeds 0 and 2 solve the task; seed 1 fails.}
 \label{tab:phase4}
 \end{table}
 
-\paragraph{Training dynamics.}
+\paragraph{Why seed 1 failed: the exploration lottery.}
+Seed 1 converged to the same ``never visit'' strategy ($-2.0$ reward) as the
+large-grid experiments. The root cause is \textbf{early exploration
+stochasticity}: the initial random weights and early trajectory samples
+determine whether the agent discovers a correct visit within the first
+$\sim$100k steps. Seeds 0 and 2 happened to stumble upon a correct visit
+early, providing a positive reward signal ($+1.0$) that the LSTM could
+latch onto and generalise. Seed 1 never received this ``lucky'' signal and
+remained stuck in the local optimum.
+
+This is a well-known phenomenon in RL: \textbf{the same hyperparameters can
+yield vastly different outcomes depending on the random seed}. With 3 seeds,
+we observe a 67\% success rate at the seed level (2 out of 3 seeds solve the
+task), suggesting the algorithm is effective but not fully robust. Strategies
+to improve seed robustness include:
+\begin{itemize}[nosep]
+  \item Higher entropy coefficient to encourage exploration.
+  \item Curriculum learning: start with $K=2$ landmarks and increase.
+  \item Longer training with exploration bonuses (e.g., intrinsic curiosity).
+\end{itemize}
+
+\paragraph{Training dynamics (seed 0).}
 The train reward trajectory tells a clear story of learning progression:
 \begin{itemize}[nosep]
   \item \textbf{0--50k steps:} Random exploration, reward $\sim -3.15$.
@@ -279,8 +302,9 @@ The train reward trajectory tells a clear story of learning progression:
   \item \textbf{200k--800k:} Agent begins attempting visits, reward improves
         through correct deliveries ($-2.59 \to -1.87$).
   \item \textbf{800k--1.5M:} LSTM learns to track history and plan
-        multi-step visit sequences ($-1.87 \to -1.35$ train, eval reward
-        best $-1.68$, eval success rate $87.5\%$).
+        multi-step visit sequences ($-1.87 \to -1.35$ train).
+  \item \textbf{1.5M--2M:} Rapid convergence to near-optimal policy.
+        Eval reward peaks at $+6.63$, train reward reaches $+6.35$.
 \end{itemize}
 
 \paragraph{Best episode reward: $+7.91$.} This is close to the theoretical
@@ -386,7 +410,11 @@ Our main findings:
   \item \textbf{RecurrentPPO succeeds} when the problem is scaled to a
         feasible difficulty: $6\times6$ grid, $K=3$ landmarks, with reward
         shaping and low wrong-visit penalty. It achieves \textbf{87.5\%
-        success rate} and near-optimal reward ($+6.09$, best $+7.91$).
+        success rate} (seed 0) and near-optimal reward ($+6.09$, best $+7.91$).
+  \item \textbf{Seed sensitivity matters:} Out of 3 random seeds, 2 solve the
+        task (87.5\% and 78.5\% success) while 1 fails entirely (0\%).
+        This highlights the role of early exploration luck in RL and
+        motivates future work on exploration robustness.
   \item \textbf{The iterative debugging process}---from total failure to
         87.5\% success---demonstrates the importance of systematic ablation
         in RL research.
