@@ -4,9 +4,13 @@
 
 ### Team Members | 小组成员
 
-- **Wu Xiangyu (武翔宇)**
-- **Chen Yunyi (可爱陈鋆怡)**
-- **Jiang Huajian (温州帅哥姜华健)**
+> All members contributed equally. Names listed alphabetically by surname.
+>
+> 所有成员贡献相同，按姓氏首字母排序，不分先后。
+
+- **Yunyi Chen (陈鋆怡)**
+- **Huajian Jiang (姜华健)**
+- **Xiangyu Wu (武翔宇)**
 
 ---
 
