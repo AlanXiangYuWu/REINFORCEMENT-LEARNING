@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env_local/
+
+# RL run outputs
+runs/
+videos/
+*.zip
+*.ckpt
+
+# LaTeX build
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.synctex.gz
+report/*.fls
+report/*.fdb_latexmk
+report/*.bbl
+report/*.blg
+report/_minted-*
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
