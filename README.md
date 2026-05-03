@@ -8,8 +8,8 @@
 >
 > 所有成员贡献相同，按姓氏首字母排序，不分先后。
 
-- **Yunyi Chen (陈鋆怡)**
-- **Huajian Jiang (姜华健)**
+- **Yunyi Chen (可爱陈鋆怡)**
+- **Huajian Jiang (温州坏哥姜华健)**
 - **Xiangyu Wu (武翔宇)**
 
 ---
