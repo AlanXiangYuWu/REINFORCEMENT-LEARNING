@@ -8,9 +8,9 @@
 >
 > 所有成员贡献相同，按姓氏首字母排序，不分先后。
 
-- **Junyi Chen (陈鋆怡)**
-- **Huajian Jiang (姜华健)**
-- **Xiangyu Wu (武翔宇)**
+- **Junyi Chen**
+- **Huajian Jiang**
+- **Xiangyu Wu**
 
 ---
 
