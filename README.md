@@ -2,16 +2,6 @@
 
 ## CA6126 Reinforcement Learning Group Project | CA6126 强化学习小组作业
 
-### Team Members | 小组成员
-
-> All members contributed equally. Names listed alphabetically by surname.
->
-> 所有成员贡献相同，按姓氏首字母排序，不分先后。
-
-- **Junyi Chen**
-- **Huajian Jiang**
-- **Xiangyu Wu**
-
 ---
 
 ## Project Overview | 项目概述
